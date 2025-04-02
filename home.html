@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login / Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background-color: #f4f4f4;
+        }
+        .navbar {
+            background-color: black;
+            padding: 10px;
+        }
+        .nav-link {
+            margin-right: 15px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+        .nav-link:hover {
+            color: #8e44ad;
+        }
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 50px;
+            margin-top: 30px;
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 45%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h2 {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="nav-link">🏛️ Home</a>
+    <a href="/books/add" class="nav-link">➕ Add Book</a>
+    <a href="/books/view" class="nav-link">📖 View Books</a>
+    <a href="/logout" class="nav-link">🚪 Logout</a>
+
+</div>
+
+<div class="form-container">
+    <!-- Login Form -->
+    <form th:action="@{/login}" method="post">
+        <h2>Login</h2>
+        <label>Input your Email✉️:
+            <input type="email" name="email" required>
+        </label>
+        <label>input your Password🔑:
+            <input type="password" name="password" required>
+        </label>
+        <button type="submit">Login</button>
+    </form>
+
+    <!-- Signup Form -->
+    <form th:action="@{/signup}" method="post" th:object="${customer}">
+        <h2>Sign Up</h2>
+        <label> enter your Full Name:
+            <input type="text" th:field="*{fullName}" required>
+        </label>
+        <label>Input your Email✉️::
+            <input type="email" th:field="*{email}" required>
+        </label>
+        <label>input your Password🔑:
+            <input type="password" th:field="*{password}" required>
+        </label>
+        <label>input you Address:
+            <input type="text" th:field="*{address}">
+        </label>
+        <label>input you choice of Payment Method💳:
+            <input type="text" th:field="*{paymentMethod}">
+        </label>
+        <label>input your Date of Birth:
+            <input type="date" th:field="*{dateOfBirth}">
+        </label>
+        <button type="submit">Sign Up</button>
+    </form>
+</div>
+
+</body>
+</html>
