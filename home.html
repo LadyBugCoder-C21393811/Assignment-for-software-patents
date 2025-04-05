@@ -58,21 +58,33 @@
 
 <div class="navbar">
     <a href="/" class="nav-link">🏛️ Home</a>
-    <a href="/books/add" class="nav-link">➕ Add Book</a>
+    <span th:if="${session.customer != null and session.customer.role == 'ADMIN'}">
+        <a href="/books/add" class="nav-link">➕ Add Book</a>
+    </span>
     <a href="/books/view" class="nav-link">📖 View Books</a>
-    <a href="/logout" class="nav-link">🚪 Logout</a>
+    <!-- Only show logout if user is logged in -->
+    <span th:if="${session.customer != null}">
+        <a href="/logout" class="nav-link">🚪 Logout</a>
+    </span>
+</div>
 
+<!-- Show success/error messages -->
+<div th:if="${logoutMessage}" style="color: green; margin-top: 15px; padding: 10px; background-color: #e8f5e9; border-radius: 5px;">
+    <p th:text="${logoutMessage}"></p>
+</div>
+<div th:if="${loginError}" style="color: red; margin-top: 15px; padding: 10px; background-color: #ffebee; border-radius: 5px;">
+    <p th:text="${loginError}"></p>
 </div>
 
 <div class="form-container">
     <!-- Login Form -->
-    <form th:action="@{/login}" method="post">
+    <form th:action="@{/login}" method="post" th:object="${customer}">
         <h2>Login</h2>
         <label>Input your Email✉️:
-            <input type="email" name="email" required>
+            <input type="email" th:field="*{email}" required>
         </label>
         <label>input your Password🔑:
-            <input type="password" name="password" required>
+            <input type="password" th:field="*{password}" required>
         </label>
         <button type="submit">Login</button>
     </form>
@@ -80,20 +92,20 @@
     <!-- Signup Form -->
     <form th:action="@{/signup}" method="post" th:object="${customer}">
         <h2>Sign Up</h2>
-        <label> enter your Full Name:
+        <label>enter your Full Name:
             <input type="text" th:field="*{fullName}" required>
         </label>
-        <label>Input your Email✉️::
+        <label>Input your Email✉️:
             <input type="email" th:field="*{email}" required>
         </label>
         <label>input your Password🔑:
             <input type="password" th:field="*{password}" required>
         </label>
-        <label>input you Address:
+        <label>input your Address:
             <input type="text" th:field="*{address}">
         </label>
-        <label>input you choice of Payment Method💳:
-            <input type="text" th:field="*{paymentMethod}">
+        <label>input your choice of Payment Method💳:
+            <input type="text" th:field="*{paymentMethod}" placeholder="e.g., Visa ****1234" />
         </label>
         <label>input your Date of Birth:
             <input type="date" th:field="*{dateOfBirth}">
