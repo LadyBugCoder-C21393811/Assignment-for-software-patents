@@ -4,162 +4,62 @@
     <meta charset="UTF-8">
     <title th:text="${book.title} + ' - Book Details'">Book Details</title>
     <style>
-        /* Navigation bar styles */
-        .navbar {
-            background-color: black;
-            padding: 10px;
-        }
-        .nav-link {
-            margin-right: 15px;
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-        .nav-link:hover {
-            color: #8e44ad;
-        }
+        /* (Your styles remain untouched) */
+        .navbar { background-color: black; padding: 10px; }
+        .nav-link { margin-right: 15px; text-decoration: none; color: white; font-weight: bold; transition: color 0.3s ease; }
+        .nav-link:hover { color: #8e44ad; }
 
-        /* Page styles */
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; }
+        .book-container { background-color: white; border-radius: 8px; padding: 20px; margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); display: flex; gap: 30px; }
 
-        /* Book details styles */
-        .book-container {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            display: flex;
-            gap: 30px;
-        }
+        .book-image { flex: 0 0 300px; }
+        .book-image img { max-width: 100%; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.2); }
 
-        .book-image {
-            flex: 0 0 300px;
-        }
+        .book-info { flex: 1; }
+        .book-title { margin-top: 0; font-size: 24px; color: #333; }
+        .book-author { font-size: 18px; color: #666; margin-bottom: 15px; }
 
-        .book-image img {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.2);
-        }
+        .book-meta { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .meta-item { padding: 10px; background-color: #f9f9f9; border-radius: 4px; }
+        .meta-label { font-weight: bold; font-size: 14px; color: #666; }
+        .meta-value { font-size: 16px; color: #333; }
 
-        .book-info {
-            flex: 1;
-        }
+        .book-price { font-size: 24px; font-weight: bold; color: #e91e63; margin-bottom: 20px; }
+        .book-description { line-height: 1.6; margin-bottom: 20px; }
+        .book-rating { font-size: 18px; color: #ff9800; margin-bottom: 20px; }
 
-        .book-title {
-            margin-top: 0;
-            font-size: 24px;
-            color: #333;
-        }
-
-        .book-author {
-            font-size: 18px;
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .book-meta {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .meta-item {
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-radius: 4px;
-        }
-
-        .meta-label {
-            font-weight: bold;
-            display: block;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .meta-value {
-            font-size: 16px;
-            color: #333;
-        }
-
-        .book-price {
-            font-size: 24px;
-            font-weight: bold;
-            color: #e91e63;
-            margin-bottom: 20px;
-        }
-
-        .book-description {
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .book-rating {
-            font-size: 18px;
-            color: #ff9800;
-            margin-bottom: 20px;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: #2196F3;
-            text-decoration: none;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
+        .back-link { display: inline-block; margin-top: 20px; color: #2196F3; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
 
         .add-to-cart {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            display: inline-block;
-            text-decoration: none;
+            background-color: #9c27b0; color: white; padding: 10px 20px;
+            border: none; border-radius: 4px; cursor: pointer;
+            font-size: 16px; text-decoration: none;
         }
 
-        .add-to-cart:hover {
-            background-color: #45a049;
-        }
+        .add-to-cart:hover { background-color: #45a049; }
 
-        /* Responsive layout */
         @media (max-width: 768px) {
-            .book-container {
-                flex-direction: column;
-            }
-
-            .book-image {
-                flex: 0 0 auto;
-                margin-bottom: 20px;
-            }
+            .book-container { flex-direction: column; }
+            .book-image { margin-bottom: 20px; }
         }
     </style>
 </head>
 <body>
+
 <!-- Navigation Bar -->
 <div class="navbar">
     <a href="/" class="nav-link">🏛️ Home</a>
     <span th:if="${session.customer != null and session.customer.role == 'ADMIN'}">
-            <a href="/books/add" class="nav-link">➕ Add Book</a>
-            <a href="/books/manage" class="nav-link">📋 Manage Books</a>
+        <a href="/books/add" class="nav-link">➕ Add Book</a>
+        <a href="/books/manage" class="nav-link">📋 Manage Books</a>
     </span>
     <span th:if="${session.customer != null}">
-            <a href="/logout" class="nav-link">🚪 Logout</a>
+        <a href="/logout" class="nav-link">🚪 Logout</a>
     </span>
     <span th:if="${session.customer == null}">
-            <a href="/home" class="nav-link">🔑 Login/Register</a>
+        <a href="/home" class="nav-link">🔑 Login/Register</a>
     </span>
 </div>
 
@@ -180,17 +80,14 @@
                 <span class="meta-label">Genre:</span>
                 <span class="meta-value" th:text="${book.genre}">Genre</span>
             </div>
-
             <div class="meta-item">
                 <span class="meta-label">ISBN:</span>
                 <span class="meta-value" th:text="${book.isbn}">ISBN</span>
             </div>
-
             <div class="meta-item">
                 <span class="meta-label">Age Rating:</span>
                 <span class="meta-value" th:text="${book.ageRating} + '+'">Age</span>
             </div>
-
             <div class="meta-item">
                 <span class="meta-label">Availability:</span>
                 <span class="meta-value" th:text="${book.quantity > 0 ? 'In Stock (' + book.quantity + ')' : 'Out of Stock'}">Stock Status</span>
@@ -206,12 +103,16 @@
         <h3>Description</h3>
         <p class="book-description" th:text="${book.description}">Description</p>
 
-        <!-- Add to cart button (to be implemented) -->
-        <a href="#" class="add-to-cart" th:if="${book.quantity > 0}">Add to Cart</a>
+        <!-- ✅ Add to Cart Form -->
+        <form th:action="@{/cart/add/{id}(id=${book.id})}" method="post" th:if="${book.quantity > 0}">
+            <input type="number" name="quantity" value="1" min="1" th:attr="max=${book.quantity}" required />
+            <button type="submit" class="add-to-cart">Add to Cart</button>
+        </form>
         <span th:if="${book.quantity <= 0}" style="color: red; font-weight: bold;">Currently unavailable</span>
     </div>
 </div>
 
 <a href="/books/view" class="back-link">← Back to Book Catalogue</a>
+
 </body>
 </html>

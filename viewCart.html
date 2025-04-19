@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #1a1a1a;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid #ccc;
+            font-weight: bold;
+            padding: 10px 0;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-details {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .item-details img {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border: 1px solid #ccc;
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price {
+            width: 100px;
+            text-align: right;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type=number] {
+            width: 50px;
+            padding: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 6px 10px;
+            cursor: pointer;
+            border: none;
+            background-color: #9c27b0;
+            color: white;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .subtotal {
+            text-align: right;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .cart-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .cart-buttons a {
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #9c27b0;
+            color: white;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .empty-message {
+            text-align: center;
+            font-size: 20px;
+            color: #999;
+            margin: 40px 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <a href="/" class="nav-link">🏠 Home</a>
+    <a href="/books/view" class="nav-link">📚 Browse Books</a>
+    <a href="/logout" class="nav-link">🚪 Logout</a>
+</div>
+
+<div class="container">
+    <h1>Shopping Cart</h1>
+    <div th:if="${errorMessage}" style="color: red; font-weight: bold; text-align: center; margin-bottom: 20px;">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+
+    <div th:if="${#lists.isEmpty(cartItems)}" class="empty-message">
+        Your cart is empty 🛒
+    </div>
+
+    <div th:if="${not #lists.isEmpty(cartItems)}">
+        <div class="cart-header">
+            <div style="flex: 1;">Product</div>
+            <div class="price">Price</div>
+            <div style="width: 140px;">Quantity</div>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <div th:each="item : ${cartItems}" class="cart-item">
+            <div class="item-details">
+                <img th:src="${item.imageUrl}" alt="Book Cover">
+                <div class="item-info">
+                    <strong th:text="${item.title}">Title</strong>
+                    <span th:text="${item.customer.fullName}">Customer</span>
+                </div>
+            </div>
+            <div class="price" th:text="'€' + ${item.price}">€0.00</div>
+            <div class="actions">
+                <form th:action="@{/cart/update/{id}(id=${item.id})}" method="post">
+                    <input type="number" name="quantity" min="1" th:value="${item.quantity}">
+                    <button type="submit">⟳</button>
+                </form>
+            </div>
+            <div>
+                <form th:action="@{/cart/delete/{id}(id=${item.id})}" method="post">
+                    <button type="submit">🗑️</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="subtotal">
+            Subtotal: <strong th:text="'€' + ${subtotal}">€0.00</strong>
+        </div>
+
+        <div class="cart-buttons">
+            <a href="/books/view">← Continue Shopping</a>
+            <a href="/checkout">Checkout</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

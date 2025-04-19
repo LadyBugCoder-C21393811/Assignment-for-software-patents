@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout Confirmation</title>
+  <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f4;
+        padding: 40px;
+    }
+
+    .navbar {
+        background-color: #1a1a1a;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .nav-link {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        font-weight: bold;
+    }
+
+    .confirmation-container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        color: #4CAF50;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: 18px;
+        margin: 10px 0;
+    }
+
+    .btn {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 12px 24px;
+        background-color: #9c27b0;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .btn:hover {
+        background-color: #7b1fa2;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <a href="/" class="nav-link">🏠 Home</a>
+  <a href="/books/view" class="nav-link">📚 Browse Books</a>
+  <a href="/logout" class="nav-link">🚪 Logout</a>
+</div>
+
+<div class="confirmation-container">
+  <h1>😊 Thank You for Your Purchase!😊</h1>
+  <p th:text="'Payment Status: ' + ${message}">Payment Status</p>
+  <p th:text="'Total Paid: €' + ${#numbers.formatDecimal(total, 1, 2)}">Total</p>
+
+  <a href="/books/view" class="btn">Continue Shopping</a>
+</div>
+
+</body>
+</html>
